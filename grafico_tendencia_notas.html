@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tendência das Notas</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f5f7;
+      color: #1f2937;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e3e7eb;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+      padding: 22px 28px 26px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      color: #172033;
+    }
+
+    .subtitulo {
+      margin: 10px 0 26px;
+      font-size: 17px;
+      color: #606a78;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 620px;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 10px;
+      }
+
+      .card {
+        padding: 16px 14px 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .subtitulo {
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+
+      .chart-wrap {
+        height: 500px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="card">
+    <h1>Tendência das Notas</h1>
+    <div class="subtitulo">
+      Distribuição das notas Amarelas, Vermelhas e ND por data.
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="graficoTendencia"></canvas>
+    </div>
+  </section>
+
+  <script>
+    Chart.register(ChartDataLabels);
+
+    const datas = [
+      "26/08/2026",
+      "02/09/2026",
+      "04/09/2026",
+      "08/09/2026",
+      "23/09/2026"
+    ];
+
+    const amarelas = [80, 54, 52, 40, 14];
+    const vermelhas = [175, 148, 136, 146, 160];
+    const nd = [164, 146, 119, 151, 155];
+
+    // Soma das três categorias em cada data.
+    const totais = datas.map((_, i) =>
+      amarelas[i] + vermelhas[i] + nd[i]
+    );
+
+    const ctx = document.getElementById("graficoTendencia");
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: datas,
+        datasets: [
+          {
+            type: "line",
+            label: "Linha de Tendência",
+            data: totais,
+            borderColor: "#e10000",
+            backgroundColor: "#e10000",
+            borderWidth: 3,
+            borderDash: [8, 6],
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            pointBackgroundColor: "#e10000",
+            pointBorderColor: "#e10000",
+            tension: 0.15,
+            fill: false,
+            order: 0,
+            datalabels: {
+              display: true,
+              align: "top",
+              anchor: "end",
+              offset: 3,
+              color: "#1f2937",
+              font: {
+                size: 13,
+                weight: "bold"
+              },
+              formatter: value => value
+            }
+          },
+          {
+            label: "Amarela",
+            data: amarelas,
+            backgroundColor: "#f4c20d",
+            borderColor: "#f4c20d",
+            borderWidth: 1,
+            borderRadius: 2,
+            categoryPercentage: 0.72,
+            barPercentage: 0.88,
+            order: 1,
+            datalabels: {
+              display: true,
+              anchor: "end",
+              align: "top",
+              color: "#1f2937",
+              font: {
+                size: 12,
+                weight: "bold"
+              },
+              formatter: value => value
+            }
+          },
+          {
+            label: "Vermelha",
+            data: vermelhas,
+            backgroundColor: "#f0352b",
+            borderColor: "#f0352b",
+            borderWidth: 1,
+            borderRadius: 2,
+            categoryPercentage: 0.72,
+            barPercentage: 0.88,
+            order: 1,
+            datalabels: {
+              display: true,
+              anchor: "end",
+              align: "top",
+              color: "#1f2937",
+              font: {
+                size: 12,
+                weight: "bold"
+              },
+              formatter: value => value
+            }
+          },
+          {
+            label: "ND",
+            data: nd,
+            backgroundColor: "#879295",
+            borderColor: "#879295",
+            borderWidth: 1,
+            borderRadius: 2,
+            categoryPercentage: 0.72,
+            barPercentage: 0.88,
+            order: 1,
+            datalabels: {
+              display: true,
+              anchor: "end",
+              align: "top",
+              color: "#1f2937",
+              font: {
+                size: 12,
+                weight: "bold"
+              },
+              formatter: value => value
+            }
+          }
+        ]
+      },
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+
+        layout: {
+          padding: {
+            top: 20,
+            right: 10,
+            left: 0,
+            bottom: 0
+          }
+        },
+
+        plugins: {
+          legend: {
+            position: "top",
+            align: "center",
+            labels: {
+              boxWidth: 36,
+              boxHeight: 14,
+              padding: 18,
+              font: {
+                size: 14
+              },
+              color: "#4b5563",
+              usePointStyle: false
+            }
+          },
+
+          tooltip: {
+            callbacks: {
+              footer: function (items) {
+                const index = items[0].dataIndex;
+                return "Total: " + totais[index];
+              }
+            }
+          }
+        },
+
+        scales: {
+          x: {
+            grid: {
+              display: true,
+              color: "rgba(90, 100, 110, .16)"
+            },
+            ticks: {
+              color: "#4b5563",
+              font: {
+                size: 12
+              },
+              maxRotation: 0,
+              minRotation: 0
+            },
+            title: {
+              display: true,
+              text: "Data",
+              color: "#374151",
+              font: {
+                size: 15,
+                weight: "normal"
+              }
+            },
+            border: {
+              color: "#aeb5bd"
+            }
+          },
+
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 500,
+            ticks: {
+              stepSize: 100,
+              color: "#4b5563",
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              color: "rgba(90, 100, 110, .16)"
+            },
+            title: {
+              display: true,
+              text: "Quantidade de notas",
+              color: "#374151",
+              font: {
+                size: 15,
+                weight: "normal"
+              }
+            },
+            border: {
+              color: "#aeb5bd"
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
