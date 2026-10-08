@@ -33,17 +33,13 @@
       padding: 22px 28px 26px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 28px;
-      font-weight: 700;
-      color: #172033;
-    }
-
-    .subtitulo {
-      margin: 10px 0 26px;
-      font-size: 17px;
-      color: #606a78;
+    .logo-topo {
+      display: block;
+      width: 260px;
+      max-width: 70%;
+      height: auto;
+      object-fit: contain;
+      margin: 0 0 18px 0;
     }
 
     .chart-wrap {
@@ -150,15 +146,6 @@
         padding: 16px 14px 20px;
       }
 
-      h1 {
-        font-size: 22px;
-      }
-
-      .subtitulo {
-        font-size: 14px;
-        margin-bottom: 18px;
-      }
-
       .chart-wrap {
         height: 500px;
       }
@@ -169,10 +156,7 @@
 <body>
 
   <section class="card">
-    <h1>Tendência das Notas</h1>
-    <div class="subtitulo">
-      Distribuição das notas Amarelas, Vermelhas e ND por data.
-    </div>
+    <img src="C:\Users\dufel\Downloads\logo-pag (1) (1).png" alt="Logo" class="logo-topo" />
 
     <div class="chart-wrap">
       <canvas id="graficoTendencia"></canvas>
